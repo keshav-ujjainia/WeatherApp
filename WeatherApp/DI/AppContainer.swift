@@ -16,11 +16,11 @@ final class AppContainer {
     }()
 
     lazy var weatherService: WeatherService = {
-        WeatherServiceImpl(apiClient: apiClient)
+        DefaultWeatherService(apiClient: apiClient)
     }()
 
     lazy var repository: WeatherRepository = {
-        WeatherRepositoryImpl(service: weatherService)
+        DefaultWeatherRepository(service: weatherService)
     }()
 
     lazy var weatherViewModel: WeatherViewModel = {
