@@ -8,13 +8,11 @@
 import Foundation
 
 protocol WeatherRepository {
-
     func getWeather() async throws -> Weather
-
     func saveFavorite(city: String) async throws
 }
 
-final class WeatherRepositoryImpl: WeatherRepository {
+final class DefaultWeatherRepository: WeatherRepository {
 
     private let service: WeatherService
 
@@ -23,12 +21,10 @@ final class WeatherRepositoryImpl: WeatherRepository {
     }
 
     func getWeather() async throws -> Weather {
-
         try await service.fetchWeather()
     }
 
     func saveFavorite(city: String) async throws {
-
         try await service.saveFavorite(city: city)
     }
 }

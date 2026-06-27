@@ -10,10 +10,10 @@ import Foundation
 protocol APIClient {
 
     func request<T: Decodable>(
-        endpoint: Endpoint
+        endpoint: any Endpoint
     ) async throws -> T
 
-    func requestWithoutResponse(
-        endpoint: Endpoint
+    func request(
+        endpoint: any Endpoint
     ) async throws
 }

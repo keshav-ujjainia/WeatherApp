@@ -12,28 +12,66 @@ enum HTTPMethod: String {
     case post = "POST"
 }
 
-struct Endpoint {
+protocol Endpoint {
 
-    let path: String
-    let method: HTTPMethod
-    let body: Data?
+    var path: String { get }
 
-    static let getWeather = Endpoint(
-        path: "/weather",
-        method: .get,
-        body: nil
-    )
+    var method: HTTPMethod { get }
 
-    static func favorite(city: String) -> Endpoint {
+    var headers: [String: String] { get }
 
-        let body = try? JSONEncoder().encode(
-            FavoriteRequest(city: city)
-        )
+    var body: Data? { get }
+}
 
-        return Endpoint(
-            path: "/favorite",
-            method: .post,
-            body: body
-        )
+enum WeatherEndpoint: Endpoint {
+
+    case weather
+
+    case favorite(city: String)
+
+    var path: String {
+
+        switch self {
+
+        case .weather:
+            return "/weather"
+
+        case .favorite:
+            return "/favorite"
+        }
+    }
+
+    var method: HTTPMethod {
+
+        switch self {
+
+        case .weather:
+            return .get
+
+        case .favorite:
+            return .post
+        }
+    }
+
+    var headers: [String: String] {
+
+        [
+            "Content-Type": "application/json"
+        ]
+    }
+
+    var body: Data? {
+
+        switch self {
+
+        case .weather:
+            return nil
+
+        case .favorite(let city):
+
+            return try? JSONEncoder().encode(
+                FavoriteRequest(city: city)
+            )
+        }
     }
 }

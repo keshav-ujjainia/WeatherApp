@@ -12,9 +12,7 @@ import Combine
 final class WeatherViewModel: ObservableObject {
 
     @Published var weather: Weather?
-
     @Published var isLoading = false
-
     @Published var errorMessage = ""
 
     private let repository: WeatherRepository
@@ -26,7 +24,7 @@ final class WeatherViewModel: ObservableObject {
     func loadWeather() {
 
         Task {
-
+            
             isLoading = true
 
             defer {
@@ -34,32 +32,25 @@ final class WeatherViewModel: ObservableObject {
             }
 
             do {
-
                 weather = try await repository.getWeather()
-
             }
             catch {
-
                 errorMessage = error.localizedDescription
             }
         }
     }
 
     func saveFavorite() {
-
+        
         guard let city = weather?.city else {
             return
         }
 
         Task {
-
             do {
-
                 try await repository.saveFavorite(city: city)
-
             }
             catch {
-
                 errorMessage = error.localizedDescription
             }
         }
